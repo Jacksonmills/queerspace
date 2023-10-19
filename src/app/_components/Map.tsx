@@ -1,14 +1,27 @@
 'use client';
 
 import { useLoadScript, GoogleMap, type Libraries } from '@react-google-maps/api';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export default function Map() {
+  const [location, setLocation] = useState({
+    lat: 40.7128,
+    lng: -74.006,
+  });
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      });
+    }
+  }, []);
+
   const libraries = useMemo(() => ['places'], []);
-  const mapCenter = useMemo(
-    () => ({ lat: 27.672932021393862, lng: 85.31184012689732 }),
-    []
-  );
+  const mapCenter = useMemo(() => location, [location]);
 
   const mapOptions = useMemo<google.maps.MapOptions>(
     () => ({
@@ -29,7 +42,7 @@ export default function Map() {
   }
 
   return (
-    <div>
+    <div className='border rounded p-6 bg-white/10'>
       <GoogleMap
         options={mapOptions}
         zoom={14}
