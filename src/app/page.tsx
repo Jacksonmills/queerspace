@@ -2,29 +2,37 @@ import { api } from "@/trpc/server";
 import CreatePost from "./_components/CreatePost";
 import { ThemeToggle } from "./_components/ThemeToggle";
 import Map from "./_components/Map";
+import Logo from "./_components/Logo";
+import RotatingPlanet from "./_components/RotatingPlanet";
 
 export default async function Home() {
   const hello = await api.post.hello.query({ text: "from tRPC" });
 
   return (
     <main className="">
-      <div>
-        <ThemeToggle />
+      <div className="w-full border-b p-6 flex items-center gap-2">
+        <ThemeToggle /> <span className="text-4xl"><RotatingPlanet /></span>
       </div>
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Queer<span className="text-[hsl(280,100%,70%)]">Space</span>🌎
-        </h1>
+        <Logo />
+        <p>
+          Find safe and inclusive spaces for queer people around the world.
+        </p>
 
-        <div className="flex flex-col items-center gap-2">
+        {/* <div className="flex flex-col items-center gap-2">
           <p className="text-2xl">
             {hello ? hello.greeting : "Loading tRPC query..."}
           </p>
+        </div> */}
+
+        <div className="w-full">
+          <Map />
         </div>
+        {/* <div>
+          <div className="w-full h-96 bg-gray-200 rounded-md animate-pulse"></div>
+        </div> */}
 
-        <Map />
-
-        <CrudShowcase />
+        {/* <CrudShowcase /> */}
       </div>
     </main>
   );

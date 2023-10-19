@@ -2,6 +2,7 @@
 
 import { useLoadScript, GoogleMap, type Libraries } from '@react-google-maps/api';
 import { useEffect, useMemo, useState } from 'react';
+import RotatingPlanet from './RotatingPlanet';
 
 export default function Map() {
   const [location, setLocation] = useState({
@@ -38,7 +39,11 @@ export default function Map() {
   });
 
   if (!isLoaded) {
-    return <p>Loading...</p>;
+    return (
+      <div className='w-full h-full grid place-content-center'>
+        <RotatingPlanet />
+      </div>
+    );
   }
 
   return (
@@ -48,7 +53,7 @@ export default function Map() {
         zoom={14}
         center={mapCenter}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
-        mapContainerStyle={{ width: '800px', height: '800px' }}
+        mapContainerStyle={{ width: '100%', height: '50vh' }}
         onLoad={() => console.log('Map Component Loaded...')}
       />
     </div>
