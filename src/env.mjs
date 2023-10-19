@@ -14,12 +14,6 @@ export const env = createEnv({
         (str) => !str.includes("YOUR_MYSQL_URL_HERE"),
         "You forgot to change the default URL"
       ),
-    GOOGLE_MAPS_API_KEY: z
-      .string()
-      .refine(
-        (str) => !str.includes("YOUR_GOOGLE_MAPS_API_KEY_HERE"),
-        "You forgot to change the default API key"
-      ),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -32,6 +26,12 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: z
+      .string()
+      .refine(
+        (str) => !str.includes("YOUR_GOOGLE_MAPS_API_KEY_HERE"),
+        "You forgot to change the default API key"
+      ),
   },
 
   /**
@@ -40,8 +40,8 @@ export const env = createEnv({
    */
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
-    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
     NODE_ENV: process.env.NODE_ENV,
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
