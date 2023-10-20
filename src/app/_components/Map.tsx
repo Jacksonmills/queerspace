@@ -2,7 +2,7 @@
 
 import { useLoadScript, GoogleMap, type Libraries } from '@react-google-maps/api';
 import { useEffect, useMemo, useState } from 'react';
-import RotatingPlanet from './RotatingPlanet';
+import RotatingEmoji from './RotatingEmoji';
 
 export default function Map() {
   const [location, setLocation] = useState({
@@ -41,7 +41,7 @@ export default function Map() {
   if (!isLoaded) {
     return (
       <div className='w-full h-full grid place-content-center'>
-        <RotatingPlanet />
+        <RotatingEmoji emoji={['🌎', '🌍', '🌏']} />
       </div>
     );
   }

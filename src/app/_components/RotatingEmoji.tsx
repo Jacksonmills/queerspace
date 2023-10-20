@@ -3,11 +3,11 @@
 import { useCallback, useEffect, useState } from "react";
 
 
-export default function RotatingPlanet() {
+export default function RotatingEmoji({ emoji }: { emoji: string[]; }) {
   const [rotation, setRotation] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const emoji = ['🌎', '🌍', '🌏'];
   const rotationsNeeded = emoji.length * 2;
+  const rotationSpeed = emoji.length * 100;
 
   const createRotationInterval = useCallback(() => {
     let count = 0;
@@ -15,9 +15,9 @@ export default function RotatingPlanet() {
       count++;
       setRotation((r) => (r + 1) % emoji.length);
       if (count >= rotationsNeeded) clearInterval(interval);
-    }, 500);
+    }, rotationSpeed);
     return interval;
-  }, [emoji.length, rotationsNeeded]);
+  }, [emoji.length, rotationSpeed, rotationsNeeded]);
 
   useEffect(() => {
     const interval = createRotationInterval();
@@ -33,7 +33,7 @@ export default function RotatingPlanet() {
 
   return (
     <span
-      className='rotate-6 hover:cursor-cell'
+      className='rotate-6 hover:cursor-none'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
