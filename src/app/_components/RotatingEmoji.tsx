@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+const initialEmoji = ['🌎', '🌍', '🌏'];
 
-export default function RotatingEmoji({ emoji }: { emoji: string[]; }) {
+export default function RotatingEmoji({ emoji = initialEmoji }: { emoji: string[]; }) {
   const [rotation, setRotation] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const rotationsNeeded = emoji.length * 2;
@@ -33,7 +34,7 @@ export default function RotatingEmoji({ emoji }: { emoji: string[]; }) {
 
   return (
     <span
-      className='rotate-6 hover:cursor-none'
+      className='rotate-6 hover:cursor-move'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
