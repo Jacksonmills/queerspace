@@ -38,7 +38,7 @@ export default function RotatingEmoji({
 
   return (
     <span
-      className="rotate-6 hover:cursor-move"
+      className="-rotate-6 hover:cursor-move"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

@@ -28,7 +28,7 @@ export default async function Home() {
         </span>
         <div className="ml-auto">
           {user ? (
-            <UserButton />
+            <UserButton afterSignOutUrl="/sign-in" />
           ) : (
             <a href="/sign-in">
               <Button>Sign in</Button>
