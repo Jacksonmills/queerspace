@@ -36,7 +36,7 @@ export function Combobox({
           aria-expanded={open}
           className="w-full justify-between"
         >
-          <span className="whitespace-nowrap overflow-hidden overflow-ellipsis">{currentValue ? currentValue : "Search..."}</span>
+          <span className="whitespace-nowrap overflow-hidden overflow-ellipsis">{currentValue ? currentValue : "Search a space to add..."}</span>
           <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

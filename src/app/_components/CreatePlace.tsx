@@ -57,7 +57,7 @@ export default function CreatePlace({
         onChange={(e) => setAddress(e.target.value)}
       />
       <Button type="submit" disabled={createPlace.isLoading || name === '' && address === ''}>
-        {createPlace.isLoading ? "Adding..." : name === '' && address === '' ? "Search for a space" : `Add ${name}`}
+        {createPlace.isLoading ? "Adding..." : name === '' && address === '' ? "No space selected" : `Add ${name}`}
       </Button>
       {createPlace.error && (
         <p>Something went wrong! {createPlace.error.message}</p>
