@@ -5,12 +5,14 @@ import { reviews } from "@/server/db/schema";
 
 export const reviewRouter = createTRPCRouter({
   create: publicProcedure
-    .input(z.object({
-      placeId: z.number(),
-      rating: z.number().min(1).max(5),
-      inclusiveScore: z.number().min(1).max(5),
-      hasGenderNeutralBathroom: z.boolean(),
-    }))
+    .input(
+      z.object({
+        placeId: z.number(),
+        rating: z.number().min(1).max(5),
+        inclusiveScore: z.number().min(1).max(5),
+        hasGenderNeutralBathroom: z.boolean(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(reviews).values({
         placeId: input.placeId,
@@ -20,11 +22,13 @@ export const reviewRouter = createTRPCRouter({
       });
     }),
 
-  getAllReviewsByPlaceId: publicProcedure.input(
-    z.object({
-      placeId: z.number(),
-    })
-  ).query(async ({ ctx, input }) => {
-    return ctx.db.query.reviews.findMany();
-  })
+  getAllReviewsByPlaceId: publicProcedure
+    .input(
+      z.object({
+        placeId: z.number(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.db.query.reviews.findMany();
+    }),
 });

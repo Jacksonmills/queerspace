@@ -1,11 +1,16 @@
-'use client';
+"use client";
 
-import { useLoadScript, GoogleMap, type Libraries, MarkerF } from '@react-google-maps/api';
-import { useEffect, useMemo, useState } from 'react';
-import RotatingEmoji from './RotatingEmoji';
-import { getGeocode, getLatLng } from 'use-places-autocomplete';
-import { Card, CardContent, CardHeader } from './ui/card';
-import { Combobox } from './Combobox';
+import {
+  useLoadScript,
+  GoogleMap,
+  type Libraries,
+  MarkerF,
+} from "@react-google-maps/api";
+import { useEffect, useMemo, useState } from "react";
+import RotatingEmoji from "./RotatingEmoji";
+import { getGeocode, getLatLng } from "use-places-autocomplete";
+import { Card, CardContent, CardHeader } from "./ui/card";
+import { Combobox } from "./Combobox";
 
 export default function Map() {
   const [location, setLocation] = useState({
@@ -24,7 +29,7 @@ export default function Map() {
     }
   }, []);
 
-  const libraries = useMemo(() => ['places'], []);
+  const libraries = useMemo(() => ["places"], []);
   const mapCenter = useMemo(() => location, [location]);
 
   const mapOptions = useMemo<google.maps.MapOptions>(
@@ -33,7 +38,7 @@ export default function Map() {
       clickableIcons: true,
       scrollwheel: true,
     }),
-    []
+    [],
   );
 
   const { isLoaded } = useLoadScript({
@@ -43,22 +48,21 @@ export default function Map() {
 
   if (!isLoaded) {
     return (
-      <div className='w-full h-full grid place-content-center'>
-        <RotatingEmoji emoji={['🌎', '🌍', '🌏']} />
+      <div className="grid h-full w-full place-content-center">
+        <RotatingEmoji emoji={["🌎", "🌍", "🌏"]} />
       </div>
     );
   }
 
   return (
-    <div className=''>
-      <div>
-      </div>
+    <div className="">
+      <div></div>
       <Card>
-        <CardHeader className='flex flex-row flex-wrap items-baseline justify-between p-2'>
+        <CardHeader className="flex flex-row flex-wrap items-baseline justify-between p-2">
           <Combobox
             onAddressSelect={async (address) => {
               await getGeocode({ address: address }).then((results) => {
-                if (!results[0]) return console.error('No results found');
+                if (!results[0]) return console.error("No results found");
                 const { lat, lng } = getLatLng(results[0]);
                 setLocation({ lat, lng });
               });
@@ -72,22 +76,26 @@ export default function Map() {
             <Button variant={'ghost'}>Other</Button>
           </div> */}
         </CardHeader>
-        <CardContent className='p-2'>
+        <CardContent className="p-2">
           <GoogleMap
             options={mapOptions}
             zoom={14}
             center={mapCenter}
             mapTypeId={google.maps.MapTypeId.ROADMAP}
-            mapContainerStyle={{ width: '100%', height: '50vh', borderRadius: '0.5rem' }}
-            onLoad={() => console.log('Map Component Loaded...')}
+            mapContainerStyle={{
+              width: "100%",
+              height: "50vh",
+              borderRadius: "0.5rem",
+            }}
+            onLoad={() => console.log("Map Component Loaded...")}
           >
             <MarkerF
               position={mapCenter}
-              onLoad={() => console.log('Marker Loaded')}
+              onLoad={() => console.log("Marker Loaded")}
             />
           </GoogleMap>
         </CardContent>
       </Card>
     </div>
   );
-};
+}

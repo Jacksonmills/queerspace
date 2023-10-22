@@ -49,7 +49,8 @@ export const places = mysqlTable(
   },
   (table) => ({
     nameIndex: index("name_idx").on(table.name), // this lets us query places by name
-  }));
+  }),
+);
 
 export const reviews = mysqlTable(
   "review",
@@ -57,7 +58,7 @@ export const reviews = mysqlTable(
     id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
     placeId: bigint("place_id", { mode: "number" }).notNull(),
     rating: bigint("rating", { mode: "number" }).notNull(),
-    hasGenderNeutralBathroom: boolean('has_gender_neutral_bathroom').notNull(),
+    hasGenderNeutralBathroom: boolean("has_gender_neutral_bathroom").notNull(),
     inclusiveScore: bigint("inclusive_score", { mode: "number" }).notNull(),
     comment: varchar("comment", { length: 256 }),
     createdAt: timestamp("created_at")
@@ -67,4 +68,5 @@ export const reviews = mysqlTable(
   },
   (table) => ({
     placeIdIndex: index("place_id_idx").on(table.placeId), // this lets us query reviews by placeId
-  }));
+  }),
+);

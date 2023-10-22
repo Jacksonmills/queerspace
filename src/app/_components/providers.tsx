@@ -1,10 +1,10 @@
-import React from 'react';
-import { ThemeProvider } from './ThemeProvider';
-import { TRPCReactProvider } from '@/trpc/react';
-import { headers } from 'next/headers';
-import { ClerkProvider } from '@clerk/nextjs';
+import React from "react";
+import { ThemeProvider } from "./ThemeProvider";
+import { TRPCReactProvider } from "@/trpc/react";
+import { headers } from "next/headers";
+import { ClerkProvider } from "@clerk/nextjs";
 
-export default function Providers({ children }: { children: React.ReactNode; }) {
+export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
       <TRPCReactProvider headers={headers()}>

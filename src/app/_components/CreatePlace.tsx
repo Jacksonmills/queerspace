@@ -47,20 +47,21 @@ export default function CreatePlace() {
         type="number"
         placeholder="Latitude"
         value={payload.latitude}
-        onChange={(e) => setPayload({ ...payload, latitude: Number(e.target.value) })}
+        onChange={(e) =>
+          setPayload({ ...payload, latitude: Number(e.target.value) })
+        }
         className="w-full rounded-full px-4 py-2 text-black"
       />
       <input
         type="number"
         placeholder="Longitude"
         value={payload.longitude}
-        onChange={(e) => setPayload({ ...payload, longitude: Number(e.target.value) })}
+        onChange={(e) =>
+          setPayload({ ...payload, longitude: Number(e.target.value) })
+        }
         className="w-full rounded-full px-4 py-2 text-black"
       />
-      <Button
-        type="submit"
-        disabled={createPlace.isLoading}
-      >
+      <Button type="submit" disabled={createPlace.isLoading}>
         {createPlace.isLoading ? "Submitting..." : "Submit"}
       </Button>
     </form>

@@ -13,7 +13,14 @@ export const placeRouter = createTRPCRouter({
   //   }),
 
   create: publicProcedure
-    .input(z.object({ name: z.string().min(1), address: z.string().min(1), latitude: z.number().min(0), longitude: z.number().min(0) }))
+    .input(
+      z.object({
+        name: z.string().min(1),
+        address: z.string().min(1),
+        latitude: z.number().min(0),
+        longitude: z.number().min(0),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(places).values({
         name: input.name,

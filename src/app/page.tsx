@@ -9,25 +9,32 @@ import { Button } from "./_components/ui/button";
 
 export default async function Home() {
   const user = await currentUser();
-  const earth = ['🌎', '🌍', '🌏'];
-  const moon = ['🌑', '🌒', '🌓', '🌔', '🌕'];
-  const girlies = ['🖐️', '✊', '🖐️', '🖐️',];
+  const earth = ["🌎", "🌍", "🌏"];
+  const moon = ["🌑", "🌒", "🌓", "🌔", "🌕"];
+  const girlies = ["🖐️", "✊", "🖐️", "🖐️"];
   const emojiList = [earth, moon, girlies];
 
-  const selectedEmoji = emojiList[Math.floor(Math.random() * emojiList.length)]!;
+  const selectedEmoji =
+    emojiList[Math.floor(Math.random() * emojiList.length)]!;
 
   return (
     <main className="">
-      <div className="w-full border-b p-6 flex items-center gap-2">
+      <div className="flex w-full items-center gap-2 border-b p-6">
         <ThemeToggle />
-        <span className="text-4xl"><RotatingEmoji emoji={selectedEmoji} /></span>
+        <span className="text-4xl">
+          <RotatingEmoji emoji={selectedEmoji} />
+        </span>
         <div className="ml-auto">
-          {user ? <UserButton /> : (
-            <a href="/sign-in"><Button>Sign in</Button></a>
+          {user ? (
+            <UserButton />
+          ) : (
+            <a href="/sign-in">
+              <Button>Sign in</Button>
+            </a>
           )}
         </div>
       </div>
-      <div className="container flex flex-col items-center justify-center gap-6 md:gap-12 px-4 py-8 md:py-16">
+      <div className="container flex flex-col items-center justify-center gap-6 px-4 py-8 md:gap-12 md:py-16">
         <div className="flex flex-col gap-4">
           <Logo />
           <p>
@@ -53,17 +60,15 @@ async function CrudShowcase() {
 
   return (
     <div className="w-full max-w-xs">
-      {
-        allPlaces.map((place) => (
-          <div key={place.id}>
-            <h2>{place.name}</h2>
-            <div>
-              <span>{place.latitude}</span>
-              <span>{place.longitude}</span>
-            </div>
+      {allPlaces.map((place) => (
+        <div key={place.id}>
+          <h2>{place.name}</h2>
+          <div>
+            <span>{place.latitude}</span>
+            <span>{place.longitude}</span>
           </div>
-        ))
-      }
+        </div>
+      ))}
       <CreatePlace />
     </div>
   );
