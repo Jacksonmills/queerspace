@@ -1,69 +1,67 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { api } from "@/trpc/react";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
-export default function CreatePlace() {
+export default function CreatePlace({
+  name: initialName = "",
+  address: initialAddress = "",
+}: {
+  name: string;
+  address: string;
+}) {
   const router = useRouter();
-  const [payload, setPayload] = useState({
-    name: "",
-    address: "",
-    latitude: 0,
-    longitude: 0,
-  });
+
+  const [name, setName] = useState(initialName);
+  const [address, setAddress] = useState(initialAddress);
 
   const createPlace = api.place.create.useMutation({
     onSuccess: () => {
+      setName("");
+      setAddress("");
+
       router.refresh();
     },
   });
+
+  useEffect(() => {
+    setName(initialName);
+    setAddress(initialAddress);
+  }, [initialName, initialAddress]);
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        createPlace.mutate(payload);
+        createPlace.mutate({
+          name,
+          address,
+        });
       }}
       className="flex flex-col gap-2"
     >
-      <input
-        type="text"
-        placeholder="Title"
-        value={payload.name}
-        onChange={(e) => setPayload({ ...payload, name: e.target.value })}
-        className="w-full rounded-full px-4 py-2 text-black"
+      <Input
+        type="hidden"
+        placeholder="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
-      <input
-        type="text"
+      <Input
+        type="hidden"
         placeholder="Address"
-        value={payload.address}
-        onChange={(e) => setPayload({ ...payload, address: e.target.value })}
-        className="w-full rounded-full px-4 py-2 text-black"
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
       />
-      <input
-        type="number"
-        placeholder="Latitude"
-        value={payload.latitude}
-        onChange={(e) =>
-          setPayload({ ...payload, latitude: Number(e.target.value) })
-        }
-        className="w-full rounded-full px-4 py-2 text-black"
-      />
-      <input
-        type="number"
-        placeholder="Longitude"
-        value={payload.longitude}
-        onChange={(e) =>
-          setPayload({ ...payload, longitude: Number(e.target.value) })
-        }
-        className="w-full rounded-full px-4 py-2 text-black"
-      />
-      <Button type="submit" disabled={createPlace.isLoading}>
-        {createPlace.isLoading ? "Submitting..." : "Submit"}
+      <Button type="submit" disabled={createPlace.isLoading || name === '' && address === ''}>
+        {createPlace.isLoading ? "Adding..." : name === '' && address === '' ? "Search for a space" : `Add ${name}`}
       </Button>
+      {createPlace.error && (
+        <p>Something went wrong! {createPlace.error.message}</p>
+      )}
     </form>
   );
 }

@@ -4,8 +4,10 @@ import Map from "./_components/Map";
 import Logo from "./_components/Logo";
 import RotatingEmoji from "./_components/RotatingEmoji";
 import { UserButton, currentUser } from "@clerk/nextjs";
-import CreatePlace from "./_components/CreatePlace";
 import { Button } from "./_components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "./_components/ui/card";
+import DeleteButton from "./_components/DeleteButton";
+import { MapIcon } from "lucide-react";
 
 export default async function Home() {
   const user = await currentUser();
@@ -45,11 +47,8 @@ export default async function Home() {
         <div className="w-full">
           <Map />
         </div>
-        {/* <div>
-          <div className="w-full h-96 bg-gray-200 rounded-md animate-pulse"></div>
-        </div> */}
 
-        {/* <CrudShowcase /> */}
+        <CrudShowcase />
       </div>
     </main>
   );
@@ -59,17 +58,27 @@ async function CrudShowcase() {
   const allPlaces = await api.place.getAllPlaces.query();
 
   return (
-    <div className="w-full max-w-xs">
-      {allPlaces.map((place) => (
-        <div key={place.id}>
-          <h2>{place.name}</h2>
-          <div>
-            <span>{place.latitude}</span>
-            <span>{place.longitude}</span>
+    <div className="w-full flex flex-col gap-4">
+      <h2 className="text-4xl font-bold">All safe spaces</h2>
+      <div className="grid gap-2">
+        {allPlaces.reverse().map((place) => (
+          <div key={place.id}>
+            <Card>
+              <CardHeader><h3 className="text-xl font-bold">{place.name}</h3></CardHeader>
+              <CardContent><p>{place.address}</p></CardContent>
+              <CardFooter className="flex items-center gap-4">
+                <a href={'https://google.com/maps/search/' + place.address} target="_blank" rel="noopener noreferrer">
+                  <Button className="flex items-center gap-2"><MapIcon />Directions</Button>
+                </a>
+
+                {process.env.NODE_ENV === 'development' && (
+                  <DeleteButton id={place.id} />
+                )}
+              </CardFooter>
+            </Card>
           </div>
-        </div>
-      ))}
-      <CreatePlace />
+        ))}
+      </div>
     </div>
   );
 }

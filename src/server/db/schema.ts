@@ -40,15 +40,14 @@ export const places = mysqlTable(
     id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
     name: varchar("name", { length: 256 }),
     address: varchar("address", { length: 256 }),
-    latitude: bigint("latitude", { mode: "number" }).default(0).notNull(),
-    longitude: bigint("longitude", { mode: "number" }).default(0).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
   },
   (table) => ({
-    nameIndex: index("name_idx").on(table.name), // this lets us query places by name
+    nameIndex: index("name_idx").on(table.name),
+    idIndex: index("id_idx").on(table.id),
   }),
 );
 
@@ -67,6 +66,7 @@ export const reviews = mysqlTable(
     updatedAt: timestamp("updatedAt").onUpdateNow(),
   },
   (table) => ({
-    placeIdIndex: index("place_id_idx").on(table.placeId), // this lets us query reviews by placeId
+    placeIdIndex: index("place_id_idx").on(table.placeId),
+    idIndex: index("id_idx").on(table.id),
   }),
 );

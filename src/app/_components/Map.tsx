@@ -8,15 +8,18 @@ import {
 } from "@react-google-maps/api";
 import { useEffect, useMemo, useState } from "react";
 import RotatingEmoji from "./RotatingEmoji";
-import { getGeocode, getLatLng } from "use-places-autocomplete";
+import { getDetails, getGeocode, getLatLng } from "use-places-autocomplete";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Combobox } from "./Combobox";
+import CreatePlace from "./CreatePlace";
 
 export default function Map() {
   const [location, setLocation] = useState({
     lat: 40.7128,
     lng: -74.006,
   });
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -55,47 +58,51 @@ export default function Map() {
   }
 
   return (
-    <div className="">
-      <div></div>
-      <Card>
-        <CardHeader className="flex flex-row flex-wrap items-baseline justify-between p-2">
-          <Combobox
-            onAddressSelect={async (address) => {
-              await getGeocode({ address: address }).then((results) => {
-                if (!results[0]) return console.error("No results found");
-                const { lat, lng } = getLatLng(results[0]);
-                setLocation({ lat, lng });
-              });
-            }}
-          />
-          {/* <div className='flex gap-2'>
+    <Card>
+      <CardHeader className="flex flex-row flex-wrap items-baseline justify-between p-2">
+        <Combobox
+          onAddressSelect={async (address) => {
+            await getGeocode({ address: address }).then(async (results) => {
+              if (!results[0]) return console.error("No results found");
+              const { lat, lng } = getLatLng(results[0]);
+              const details = await getDetails({ placeId: results[0].place_id });
+              if (typeof details === 'string') return console.error("No details found");
+              const { name, formatted_address } = details;
+              if (!name || !formatted_address) return console.error("No details found");
+              setLocation({ lat, lng });
+              setName(name);
+              setAddress(formatted_address);
+            });
+          }}
+        />
+        {/* <div className='flex gap-2'>
             <Button variant={'ghost'}>Food</Button>
             <Button variant={'ghost'}>Gas/EV</Button>
             <Button variant={'ghost'}>Restroom</Button>
             <Button variant={'ghost'}>Shelter</Button>
             <Button variant={'ghost'}>Other</Button>
           </div> */}
-        </CardHeader>
-        <CardContent className="p-2">
-          <GoogleMap
-            options={mapOptions}
-            zoom={14}
-            center={mapCenter}
-            mapTypeId={google.maps.MapTypeId.ROADMAP}
-            mapContainerStyle={{
-              width: "100%",
-              height: "50vh",
-              borderRadius: "0.5rem",
-            }}
-            onLoad={() => console.log("Map Component Loaded...")}
-          >
-            <MarkerF
-              position={mapCenter}
-              onLoad={() => console.log("Marker Loaded")}
-            />
-          </GoogleMap>
-        </CardContent>
-      </Card>
-    </div>
+      </CardHeader>
+      <CardContent className="p-2">
+        <CreatePlace name={name} address={address} />
+        {/* <GoogleMap
+          options={mapOptions}
+          zoom={14}
+          center={mapCenter}
+          mapTypeId={google.maps.MapTypeId.ROADMAP}
+          mapContainerStyle={{
+            width: "100%",
+            height: "50vh",
+            borderRadius: "0.5rem",
+          }}
+          onLoad={() => console.log("Map Component Loaded...")}
+        >
+          <MarkerF
+            position={mapCenter}
+            onLoad={() => console.log("Marker Loaded")}
+          />
+        </GoogleMap> */}
+      </CardContent>
+    </Card>
   );
 }
