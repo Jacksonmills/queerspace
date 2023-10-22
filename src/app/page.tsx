@@ -1,12 +1,14 @@
 import { api } from "@/trpc/server";
-import CreatePost from "./_components/CreatePost";
 import { ThemeToggle } from "./_components/ThemeToggle";
 import Map from "./_components/Map";
 import Logo from "./_components/Logo";
 import RotatingEmoji from "./_components/RotatingEmoji";
+import { UserButton, currentUser } from "@clerk/nextjs";
+import CreatePlace from "./_components/CreatePlace";
+import { Button } from "./_components/ui/button";
 
 export default async function Home() {
-  const hello = await api.post.hello.query({ text: "from tRPC" });
+  const user = await currentUser();
   const earth = ['🌎', '🌍', '🌏'];
   const moon = ['🌑', '🌒', '🌓', '🌔', '🌕'];
   const girlies = ['🖐️', '✊', '🖐️', '🖐️',];
@@ -19,21 +21,22 @@ export default async function Home() {
       <div className="w-full border-b p-6 flex items-center gap-2">
         <ThemeToggle />
         <span className="text-4xl"><RotatingEmoji emoji={selectedEmoji} /></span>
+        <div className="ml-auto">
+          {user ? <UserButton /> : (
+            <a href="/sign-in"><Button>Sign in</Button></a>
+          )}
+        </div>
       </div>
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <Logo />
-        <p>
-          Find safe and inclusive spaces for queer people around the world.
-        </p>
-
-        {/* <div className="flex flex-col items-center gap-2">
-          <p className="text-2xl">
-            {hello ? hello.greeting : "Loading tRPC query..."}
+      <div className="container flex flex-col items-center justify-center gap-6 md:gap-12 px-4 py-8 md:py-16">
+        <div className="flex flex-col gap-4">
+          <Logo />
+          <p>
+            Find safe and inclusive spaces for queer people around the world.
           </p>
-        </div> */}
+        </div>
 
         <div className="w-full">
-          {/* <Map /> */}
+          <Map />
         </div>
         {/* <div>
           <div className="w-full h-96 bg-gray-200 rounded-md animate-pulse"></div>
@@ -46,17 +49,22 @@ export default async function Home() {
 }
 
 async function CrudShowcase() {
-  const latestPost = await api.post.getLatest.query();
+  const allPlaces = await api.place.getAllPlaces.query();
 
   return (
     <div className="w-full max-w-xs">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
-      ) : (
-        <p>You have no posts yet.</p>
-      )}
-
-      <CreatePost />
+      {
+        allPlaces.map((place) => (
+          <div key={place.id}>
+            <h2>{place.name}</h2>
+            <div>
+              <span>{place.latitude}</span>
+              <span>{place.longitude}</span>
+            </div>
+          </div>
+        ))
+      }
+      <CreatePlace />
     </div>
   );
 }
