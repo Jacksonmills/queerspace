@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { Combobox } from "./Combobox";
 import CreatePlace from "./CreatePlace";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 export default function Map() {
   const [location, setLocation] = useState({
@@ -51,7 +52,7 @@ export default function Map() {
     return (
       <Card>
         <CardHeader>
-          <Combobox />
+          <Input disabled />
         </CardHeader>
         <CardContent>
           <Button className="w-full" disabled>Loading...</Button>
