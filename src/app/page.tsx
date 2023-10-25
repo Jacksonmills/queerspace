@@ -3,11 +3,12 @@ import { ThemeToggle } from "./_components/ThemeToggle";
 import Map from "./_components/Map";
 import Logo from "./_components/Logo";
 import RotatingEmoji from "./_components/RotatingEmoji";
-import { UserButton, currentUser } from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading, UserButton, currentUser } from "@clerk/nextjs";
 import { Button } from "./_components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "./_components/ui/card";
 import DeleteButton from "./_components/DeleteButton";
 import { MapIcon } from "lucide-react";
+import { Skeleton } from "./_components/ui/skeleton";
 
 export default async function Home() {
   const user = await currentUser();
@@ -27,13 +28,12 @@ export default async function Home() {
           <RotatingEmoji emoji={selectedEmoji} />
         </span>
         <div className="ml-auto">
-          {user ? (
+          <ClerkLoaded>
             <UserButton afterSignOutUrl="/sign-in" />
-          ) : (
-            <a href="/sign-in">
-              <Button>Sign in</Button>
-            </a>
-          )}
+          </ClerkLoaded>
+          <ClerkLoading>
+            <Skeleton className="w-[32px] h-[32px]" />
+          </ClerkLoading>
         </div>
       </div>
       <div className="container flex flex-col items-center justify-center gap-6 px-4 py-8 md:gap-12 md:py-16">

@@ -2,16 +2,14 @@
 
 import {
   useLoadScript,
-  GoogleMap,
   type Libraries,
-  MarkerF,
 } from "@react-google-maps/api";
 import { useEffect, useMemo, useState } from "react";
-import RotatingEmoji from "./RotatingEmoji";
 import { getDetails, getGeocode, getLatLng } from "use-places-autocomplete";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Combobox } from "./Combobox";
 import CreatePlace from "./CreatePlace";
+import { Button } from "./ui/button";
 
 export default function Map() {
   const [location, setLocation] = useState({
@@ -51,15 +49,20 @@ export default function Map() {
 
   if (!isLoaded) {
     return (
-      <div className="grid h-full w-full place-content-center">
-        <RotatingEmoji emoji={["🌎", "🌍", "🌏"]} />
-      </div>
+      <Card>
+        <CardHeader>
+          <Combobox />
+        </CardHeader>
+        <CardContent>
+          <Button className="w-full" disabled>Loading...</Button>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
     <Card>
-      <CardHeader className="flex flex-row flex-wrap items-baseline justify-between p-2">
+      <CardHeader className="flex flex-row flex-wrap items-baseline justify-between">
         <Combobox
           onAddressSelect={async (address) => {
             await getGeocode({ address: address }).then(async (results) => {
@@ -83,7 +86,7 @@ export default function Map() {
             <Button variant={'ghost'}>Other</Button>
           </div> */}
       </CardHeader>
-      <CardContent className="p-2">
+      <CardContent>
         <CreatePlace name={name} address={address} />
         {/* <GoogleMap
           options={mapOptions}
